@@ -14,26 +14,26 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - MinterAdded
-        - MinterRemoved
-        - NewOwnership
-        - NewPendingOwnership
+        # - Approval
+        # - MinterAdded
+        # - MinterRemoved
+        # - NewOwnership
+        # - NewPendingOwnership
         - Transfer
       abis:
         - name: Contract
           file: ./abis/Contract.json
       eventHandlers:
-        - event: Approval(indexed address,indexed address,uint256)
-          handler: handleApproval
-        - event: MinterAdded(indexed address)
-          handler: handleMinterAdded
-        - event: MinterRemoved(indexed address)
-          handler: handleMinterRemoved
-        - event: NewOwnership(indexed address,indexed address)
-          handler: handleNewOwnership
-        - event: NewPendingOwnership(indexed address,indexed address)
-          handler: handleNewPendingOwnership
+        # - event: Approval(indexed address,indexed address,uint256)
+        #   handler: handleApproval
+        # - event: MinterAdded(indexed address)
+        #   handler: handleMinterAdded
+        # - event: MinterRemoved(indexed address)
+        #   handler: handleMinterRemoved
+        # - event: NewOwnership(indexed address,indexed address)
+        #   handler: handleNewOwnership
+        # - event: NewPendingOwnership(indexed address,indexed address)
+        #   handler: handleNewPendingOwnership
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
       file: ./src/contract.ts

@@ -1,19 +1,22 @@
+import { BigInt } from '@graphprotocol/graph-ts';
+
 import {
   Approval as ApprovalEvent,
   MinterAdded as MinterAddedEvent,
   MinterRemoved as MinterRemovedEvent,
   NewOwnership as NewOwnershipEvent,
   NewPendingOwnership as NewPendingOwnershipEvent,
-  Transfer as TransferEvent
-} from "../generated/Contract/Contract"
+  Transfer as TransferEvent,
+} from '../generated/Contract/Contract';
 import {
   Approval,
+  Balance,
   MinterAdded,
   MinterRemoved,
   NewOwnership,
   NewPendingOwnership,
-  Transfer
-} from "../generated/schema"
+  Transfer,
+} from '../generated/schema';
 
 export function handleApproval(event: ApprovalEvent): void {
   let entity = new Approval(
@@ -99,4 +102,22 @@ export function handleTransfer(event: TransferEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  let senderBalanceEntity = Balance.load(event.params.from);
+  if (!senderBalanceEntity) {
+    senderBalanceEntity = new Balance(event.params.from);
+    senderBalanceEntity.value = new BigInt(0);
+  }
+  senderBalanceEntity.value.minus(event.params.value);
+
+  senderBalanceEntity.save()
+
+  let receiverBalanceEntity = Balance.load(event.params.to);
+  if (!receiverBalanceEntity) {
+    receiverBalanceEntity = new Balance(event.params.to);
+    receiverBalanceEntity.value = new BigInt(0)
+  }
+  receiverBalanceEntity.value.plus(event.params.value);
+
+  receiverBalanceEntity.save()
 }
